@@ -1,0 +1,25 @@
+.add-reminder-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px;
+    /* background-color: #f8f8f8; */
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: inherit;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+  }

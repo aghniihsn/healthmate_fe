@@ -1,0 +1,12 @@
+.site-layout {
+    background-color: #F4F9FD!important;
+  }
+  .site-content-layout {
+    margin: 0 16px 0 0;
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .site-content-layout {
+      margin: 16px;
+    }
+  }

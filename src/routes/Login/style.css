@@ -1,0 +1,58 @@
+.login-container {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 100vh;
+}
+
+.login-form-container {
+    flex: 1;
+    background-color: #F2F9FF;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 350px;
+}
+
+.forgot-password {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.login-button {
+    margin-bottom: 16px;
+}
+
+.register-link {
+    margin-top: 16px;
+}
+
+.image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    min-width: 300px;
+    text-align: center;
+}
+
+.medicine-image {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* HIDE IMAGE ON SMALL SCREEN */
+@media (max-width: 768px) {
+    .image-container {
+        display: none;
+    }
+}
