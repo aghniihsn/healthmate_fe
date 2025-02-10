@@ -53,7 +53,7 @@ function Header() {
   const getNotificationList = async () => {
     const userId = cookie.get("user")?.id;
     if (!userId) return;
-    const response = await fetch(`http://localhost:5000/notification/${userId}`, {
+    const response = await fetch(`https://healthmate-be.vercel.app/notification/${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -80,7 +80,7 @@ function Header() {
 
       if(userData?.user_id != 1 && !socket) {
         // create websocket/connect
-        socket = io("http://127.0.0.1:5000");
+        socket = io("https://healthmate-be.vercel.app");
   
         // listen for chat events
         socket.on("notification", (chat) => {

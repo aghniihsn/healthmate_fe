@@ -32,7 +32,7 @@ function CheckSchedule() {
         return [];  
       }  
   
-      const response = await fetch(`http://127.0.0.1:5000/reminder?user_id=${userId}`, {  
+      const response = await fetch(`https://healthmate-be.vercel.app/reminder?user_id=${userId}`, {  
         method: "GET",  
         headers: {  
           "Content-Type": "application/json",  
@@ -89,7 +89,7 @@ function CheckSchedule() {
   
   async function deleteReminder(id) {  
     try {  
-      const response = await fetch(`http://127.0.0.1:5000/reminder/${id}`, {  
+      const response = await fetch(`https://healthmate-be.vercel.app/reminder/${id}`, {  
         method: "DELETE",  
         headers: {  
           "Content-Type": "application/json",  

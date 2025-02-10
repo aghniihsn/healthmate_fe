@@ -46,7 +46,7 @@ function Profile() {
         console.log("Payload yang dikirim:", JSON.stringify(payload, null, 2));
     
         try {
-            const response = await fetch("http://127.0.0.1:5000/update-profile", {
+            const response = await fetch("https://healthmate-be.vercel.app/update-profile", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

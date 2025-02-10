@@ -29,7 +29,7 @@ function CheckRecords() {
         return [];
       }
 
-      const response = await fetch(`http://127.0.0.1:5000/history/${userId}`, {
+      const response = await fetch(`https://healthmate-be.vercel.app/history/${userId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

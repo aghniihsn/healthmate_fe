@@ -7,7 +7,7 @@ const Admin = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/allUser', {
+      const response = await fetch('https://healthmate-be.vercel.app/allUser', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

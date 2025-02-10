@@ -67,7 +67,7 @@ function AddReminder() {
         console.log("Payload yang akan dikirim:", payload);
     
         try {
-            const response = await fetch('http://localhost:5000/reminder', {
+            const response = await fetch('https://healthmate-be.vercel.app/reminder', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
