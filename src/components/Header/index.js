@@ -75,17 +75,17 @@ function Header() {
 
   useEffect(() => {
     // Ensure this code runs only on the client side
-    if (typeof window !== 'undefined') {
-      OneSignal.init({
-        appId: 'add33a0d-1b91-4183-b9fe-594bb88d63c1',
-        // You can add other initialization options here
-        notifyButton: {
-          enable: true,
-        },
-        // Uncomment the below line to run on localhost. See: https://documentation.onesignal.com/docs/local-testing
-        // allowLocalhostAsSecureOrigin: true
-      });
-    }
+    // if (typeof window !== 'undefined') {
+    //   OneSignal.init({
+    //     appId: '25850dc0-06ac-45c7-bbfb-3681b2a4450b',
+    //     // You can add other initialization options here
+    //     notifyButton: {
+    //       enable: true,
+    //     },
+    //     // Uncomment the below line to run on localhost. See: https://documentation.onesignal.com/docs/local-testing
+    //     // allowLocalhostAsSecureOrigin: true
+    //   });
+    // }
 
   }, [cookieUser]);
 
