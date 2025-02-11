@@ -1,75 +1,84 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Typography, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import cookie from '../../core/helpers/cookie';
 import useLocalData from "../../core/hook/useLocalData";
+import { firebaseConfig, firebaseVapidKey, getBaseUrl } from '../../config';
+
 import './style.css'; // Tambahkan file CSS eksternal
 
 const { Title, Link } = Typography;
 
 function Login() {
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const { store, dispatch } = useLocalData();
   const cookieUser = cookie.get("user");
 
   const onFinish = async (values) => {
     const payload = {
-        email: values.email,
-        password: values.password,
+      email: values.email,
+      password: values.password,
+      fcm_token: ''
     };
 
+    setLoading(true)
     try {
-        console.log("Sending data:", payload);
-        const response = await fetch("https://healthmate-be.vercel.app/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-        });
+      console.log("Sending data:", payload);
+      const response = await fetch(`${getBaseUrl("/login")}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-        const result = await response.json();
-        console.log("Response:", result);
+      const result = await response.json();
+      console.log("Response:", result);
 
-        if (response.ok) {
-            console.log("Login successful:", result);
-            const userData = result.data.data; // Ambil data user
-            const accessToken = result.data.access_token; // Ambil access token
-            const refreshToken = result.data.refresh_token; // Ambil refresh token
+      if (response.ok) {
 
-            // Simpan user data di cookie
-            cookie.set("user", JSON.stringify(userData), { path: "/", expires: 7 });
+        console.log("Login successful:", result);
+        const userData = result.data.data; // Ambil data user
+        const accessToken = result.data.access_token; // Ambil access token
+        const refreshToken = result.data.refresh_token; // Ambil refresh token
 
-            // Simpan access token dan refresh token di cookie
-            cookie.set("access_token", accessToken, { path: "/", expires: 7, secure: true, sameSite: "Strict" });
-            cookie.set("refresh_token", refreshToken, { path: "/", expires: 7, secure: true, sameSite: "Strict" });
+        // Simpan user data di cookie
+        cookie.set("user", JSON.stringify(userData), { path: "/", expires: 7 });
 
-            if (cookieUser) {
-                dispatch({
-                    type: "update",
-                    name: "userData",
-                    value: JSON.parse(cookieUser),
-                });
-            }
+        // Simpan access token dan refresh token di cookie
+        cookie.set("access_token", accessToken, { path: "/", expires: 7, secure: true, sameSite: "Strict" });
+        cookie.set("refresh_token", refreshToken, { path: "/", expires: 7, secure: true, sameSite: "Strict" });
 
-            if (userData.user_id === 1) {
-              navigate("/admin");
-          } else {
-              navigate("/dashboard");
-          }
-        } else {
-            console.error("Login failed:", result);
-            Modal.error({
-                title: "Login Gagal",
-                content: result.message || "Login failed!",
-            });
+        if (cookieUser) {
+          dispatch({
+            type: "update",
+            name: "userData",
+            value: JSON.parse(cookieUser),
+          });
         }
-    } catch (error) {
-        console.error("Error:", error);
+
+        if (userData.user_id === 1) {
+          navigate("/admin");
+        } else {
+          navigate("/dashboard");
+        }
+      } else {
+        console.error("Login failed:", result);
         Modal.error({
-            title: "Error",
-            content: "Something went wrong. Please try again.",
+          title: "Login Gagal",
+          content: result.message || "Login failed!",
         });
+      }
+      setLoading(false)
+
+    } catch (error) {
+      setLoading(false)
+      console.error("Error:", error);
+      Modal.error({
+        title: "Error",
+        content: "Something went wrong. Please try again.",
+      });
     }
   };
 
@@ -84,11 +93,11 @@ function Login() {
         <p>Please enter your details</p>
 
         <Form name="login" layout="vertical" initialValues={{ remember: true }} onFinish={onFinish} onFinishFailed={onFinishFailed} className="login-form">
-          <Form.Item label="Email address" name="email" rules={[{ required: true, message: "Please input your email!" }, { type: "email", message: "Please enter a valid email!" }]}>
+          <Form.Item disabled={loading} label="Email address" name="email" rules={[{ required: true, message: "Please input your email!" }, { type: "email", message: "Please enter a valid email!" }]}>
             <Input placeholder="Enter your email" />
           </Form.Item>
 
-          <Form.Item label="Password" name="password" rules={[{ required: true, message: "Please input your password!" }]}>
+          <Form.Item disabled={loading} label="Password" name="password" rules={[{ required: true, message: "Please input your password!" }]}>
             <Input.Password placeholder="Enter your password" />
           </Form.Item>
 
@@ -97,7 +106,7 @@ function Login() {
           </div>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block className="login-button">
+            <Button loading={loading} type="primary" htmlType="submit" block className="login-button">
               Sign in
             </Button>
           </Form.Item>

@@ -3,6 +3,7 @@ import { Form, Input, Button, Col, Layout, Modal } from "antd";
 import { useNavigate } from 'react-router-dom';
 import cookie from '../../core/helpers/cookie';
 import "./style.css";
+import { getBaseUrl } from "../../config";
 
 const { Content } = Layout;
 
@@ -36,17 +37,17 @@ function Profile() {
             });
             return;
         }
-    
+
         const payload = {
             name: values.name,
             email: form.getFieldValue('email'),
             phone_number: values.phone_number,
         };
-    
+
         console.log("Payload yang dikirim:", JSON.stringify(payload, null, 2));
-    
+
         try {
-            const response = await fetch("https://healthmate-be.vercel.app/update-profile", {
+            const response = await fetch(getBaseUrl("/update-profile"), {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,10 +56,10 @@ function Profile() {
                 },
                 body: JSON.stringify(payload),
             });
-    
+
             const result = await response.json();
             console.log("Response dari server:", result);
-    
+
             if (response.ok) {
                 Modal.success({
                     title: "Profil Diperbarui",
@@ -82,7 +83,7 @@ function Profile() {
             });
         }
     }
-    
+
     function cancelBtn() {
         navigate('/dashboard');
     }

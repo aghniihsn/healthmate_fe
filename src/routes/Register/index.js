@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Typography, message } from 'antd';
 import './style.css'; // Tambahkan file CSS eksternal
+import { getBaseUrl } from '../../config';
 
 const { Title } = Typography;
 
@@ -9,6 +10,7 @@ function Register() {
   const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
@@ -31,9 +33,10 @@ function Register() {
       phone_number: values.phone_number,
       password: values.password,
     };
+    setLoading(true)
 
     try {
-      const response = await fetch('https://healthmate-be.vercel.app/register', {
+      const response = await fetch(getBaseUrl('/register'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +55,10 @@ function Register() {
       } else {
         message.error(result.error || 'Registration failed.');
       }
+      setLoading(false)
+
     } catch (error) {
+      setLoading(false)
       console.error('Error:', error);
       message.error('Something went wrong!');
     }
@@ -76,6 +82,7 @@ function Register() {
           className="form-content"
         >
           <Form.Item
+            disabled={loading}
             label="Name"
             name="name"
             rules={[{ required: true, message: 'Please input your name!' }]}
@@ -84,6 +91,7 @@ function Register() {
           </Form.Item>
 
           <Form.Item
+            disabled={loading}
             label="Email address"
             name="email"
             rules={[
@@ -95,6 +103,7 @@ function Register() {
           </Form.Item>
 
           <Form.Item
+            disabled={loading}
             label="Phone Number"
             name="phone_number"
             rules={[
@@ -109,6 +118,7 @@ function Register() {
           </Form.Item>
 
           <Form.Item
+            disabled={loading}
             label="Password"
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
@@ -117,7 +127,7 @@ function Register() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button loading={loading} type="primary" htmlType="submit" block>
               Sign Up
             </Button>
           </Form.Item>

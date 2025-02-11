@@ -1,20 +1,22 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Modal, List, notification, Popover } from 'antd';
-import { io } from 'socket.io-client';
 import { Link, useNavigate } from "react-router-dom";
+
+import OneSignal from 'react-onesignal';
+
 
 import useLocalData from "../../core/hook/useLocalData";
 import cookie from "../../core/helpers/cookie";
 import "./style.css";
+import { getBaseUrl } from "../../config";
 
-  // outside of your component, initialize the socket variable
-  let socket;
 
 function Header() {
   const { store, dispatch } = useLocalData();
   const userData = store.userData;
   const navigate = useNavigate()
   const [notif, setNotif] = useState()
+
   console.log("header cuy", userData)
 
   function handleLogout() {
@@ -26,13 +28,8 @@ function Header() {
       onOk: () => {
         cookie.del('user');
         dispatch({ type: 'update', value: null, name: 'userData' });
-  
-        if (socket) {
-          console.log('diskonek');
-          socket.disconnect();
-          socket = null;
-        }
-  
+        // goOffline(firebaseDB)
+
         navigate('/login');
       },
     })
@@ -46,14 +43,14 @@ function Header() {
   const openNotificationWithIcon = () => {
     api.info({
       message: 'Reminder',
-      description: store.notification,
+      description: store.notification.message,
     });
   };
 
   const getNotificationList = async () => {
     const userId = cookie.get("user")?.id;
     if (!userId) return;
-    const response = await fetch(`https://healthmate-be.vercel.app/notification/${userId}`, {
+    const response = await fetch(getBaseUrl(`/notification/${userId}`), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -75,24 +72,21 @@ function Header() {
   //   }
   // }, [cookieUser]);
 
-  useEffect(() => {
-    if (cookieUser && userData) {
 
-      if(userData?.user_id != 1 && !socket) {
-        // create websocket/connect
-        socket = io("https://healthmate-be.vercel.app");
-  
-        // listen for chat events
-        socket.on("notification", (chat) => {
-          dispatch({
-            type: "update",
-            name: "notification",
-            value: chat,
-          });
-        })
-      }
-      
+  useEffect(() => {
+    // Ensure this code runs only on the client side
+    if (typeof window !== 'undefined') {
+      OneSignal.init({
+        appId: 'add33a0d-1b91-4183-b9fe-594bb88d63c1',
+        // You can add other initialization options here
+        notifyButton: {
+          enable: true,
+        },
+        // Uncomment the below line to run on localhost. See: https://documentation.onesignal.com/docs/local-testing
+        // allowLocalhostAsSecureOrigin: true
+      });
     }
+
   }, [cookieUser]);
 
   useMemo(() => {

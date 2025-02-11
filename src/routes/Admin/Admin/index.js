@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Space, Table, Tag, message } from 'antd';
+import { getBaseUrl } from '../../../config';
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
@@ -7,7 +8,7 @@ const Admin = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('https://healthmate-be.vercel.app/allUser', {
+      const response = await fetch(getBaseUrl('/allUser'), {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +34,7 @@ const Admin = () => {
       console.error('Error fetching users:', error);
       message.error('Something went wrong while fetching users.');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -75,8 +76,8 @@ const Admin = () => {
   ];
 
   return (
-    <div style={{ minHeight:"90vh", padding:"50px", backgroundColor: "#F2F9FF" }}>
-      <h1 className="title">List User</h1>  
+    <div style={{ minHeight: "90vh", padding: "50px", backgroundColor: "#F2F9FF" }}>
+      <h1 className="title">List User</h1>
       <Table
         columns={columns}
         dataSource={users}

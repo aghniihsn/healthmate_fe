@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 
 import cookie from "../../core/helpers/cookie";
 import "./style.css";
+import { getBaseUrl } from "../../config";
 
 const { Content } = Layout;
 
 function CheckRecords() {
   const navigate = useNavigate();
   const [reminders, setReminders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   async function fetchReminders() {
     const userCookie = cookie.get("user");
@@ -29,7 +31,7 @@ function CheckRecords() {
         return [];
       }
 
-      const response = await fetch(`https://healthmate-be.vercel.app/history/${userId}`, {
+      const response = await fetch(getBaseUrl(`/reminder/history/${userId}`), {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +53,8 @@ function CheckRecords() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await fetchReminders();
+      setLoading(true)
+      const data = await fetchReminders().finally(() => setLoading(false));
       setReminders(
         data.map((item) => ({
           key: item.id_reminder,
@@ -103,7 +106,7 @@ function CheckRecords() {
     <Content style={{ minHeight: "90vh", padding: "50px", backgroundColor: "#F2F9FF" }}>
       <div className="records">
         <h1>Riwayat Reminder</h1>
-        <Table dataSource={reminders} columns={columns} scroll={{ x: "max-content" }} />
+        <Table loading={loading} dataSource={reminders} columns={columns} scroll={{ x: "max-content" }} />
         <Button style={{ marginTop: "20px" }} color="primary" variant="filled" onClick={handleBack}>
           Back
         </Button>
