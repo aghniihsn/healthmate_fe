@@ -128,7 +128,7 @@ function Update({ reminder, onUpdate }) {
                         rules={[{ required: true, message: "Please select date range" }]}
                     >
                         <DatePicker.RangePicker
-                            disabledDate={disabledDate}
+                            disabledDate={(current) => disabledDate(current, form.getFieldValue("start_date"))}                            
                             style={{ width: "100%" }}
                             format={"YYYY-MM-DD"}
                         />

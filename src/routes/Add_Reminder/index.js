@@ -104,10 +104,10 @@ function AddReminder() {
         }
     }
 
-    const disabledDate = (current, selectedDates) => {
-        if (!selectedDates || selectedDates.length === 0) {
-            return current && current < moment().startOf("day");
-        }
+    const disabledDate = (current, selectedDates) => {      
+        if (!selectedDates || selectedDates.length === 0) {      
+            return current && current < moment().startOf("day");      
+        }      
     };
 
     function cancelBtn() {
@@ -175,7 +175,7 @@ function AddReminder() {
                                     name="start_date"
                                     rules={[{ required: true, message: "Silakan pilih rentang tanggal" }]}
                                 >
-                                    <DatePicker.RangePicker disabledDate={disabledDate} style={{ width: "100%" }} format={"YYYY-MM-DD"} />
+                                    <DatePicker.RangePicker disabledDate={(current) => disabledDate(current, form.getFieldValue("start_date"))} style={{ width: "100%" }} format={"YYYY-MM-DD"} />
                                 </Form.Item>
                             </Col>
                         </Row>

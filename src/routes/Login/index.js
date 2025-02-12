@@ -119,7 +119,6 @@ function Login() {
 
       <div className="image-container">
         <img src="image/medicine.gif" alt="reminder" className="medicine-image" />
-        <p>Set your Time to take your medication on Time!</p>
       </div>
     </div>
   );

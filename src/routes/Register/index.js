@@ -140,7 +140,6 @@ function Register() {
 
       <div className="register-image">
         <img src="image/medicine.gif" alt="reminder" />
-        <p>Set your Time to take your medication on Time!</p>
       </div>
     </div>
   );
